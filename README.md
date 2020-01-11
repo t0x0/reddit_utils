@@ -54,6 +54,22 @@ Specific instructions for Windows PowerShell:
 >>> flask run
 ```
 
+Specific instructions for WSL (Debian):
+
+```
+$ pip3 install virtualenv
+$ git clone https://github.com/roman-ku/reddit_utils.git
+$ cd reddit_utils
+$ virtualenv -p python3 env
+$ source ./env/Scripts/activate
+$ pip3 install -r requirements.txt
+$ export FLASK_ENV=development
+$ export FLASK_APP=reddit_utils
+$ flask run
+
+App will be available on port 5000
+```
+
 Here are some helpful links that provide more detail:
 
 * https://virtualenv.pypa.io/en/stable/userguide/
