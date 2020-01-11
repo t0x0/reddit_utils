@@ -104,7 +104,10 @@ def user_saved(reddit, **search_options):
         source = reddit.user.me().saved(limit=None)
     else:
         source = reddit.user.me().new(limit=None)
-
+        
+    f = open('results.txt', 'w', encoding='utf-8')
+    g = open('urls.txt', 'w', encoding='utf-8')
+    
     for saved_item in source:
 
         # we can have two types of objects here:
@@ -116,6 +119,13 @@ def user_saved(reddit, **search_options):
 
         saved_item.id            # trigger loading
         item = vars(saved_item)  # pull off properties
+        
+        f.write(pprint.pformat(vars(saved_item), indent=4))
+        try:
+            if item['url'] != '':
+                g.write('%s,%s\n' % (item['url'], item['id']))
+        except:
+            pass
 
         # determine item type
         if isinstance(saved_item, Submission):
@@ -135,6 +145,10 @@ def user_saved(reddit, **search_options):
         # search through the text items
         for text_key in ['link_title', 'link_permalink', 'link_url', 'selftext', 'title', 'body', 'permalink', 'url']:
 
+            if False: # Change this to 'if True:' to get all results whether they match or not
+                matched = True
+                break
+            
             if text_key not in item:
                 continue
 
@@ -146,7 +160,9 @@ def user_saved(reddit, **search_options):
             yield item
 
         matched = False
-
+        
+    f.close()
+    g.close()
 
     # dump items to file (for development/debugging)
     # for i, saved_item in enumerate(results):
